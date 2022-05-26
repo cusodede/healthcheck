@@ -7,6 +7,7 @@
 - Database
 - RabbitMQ
 - MinIO
+- MINIO_CUSODEDE (Проверяем MinIO с пакетом "cusodede/yii2-s3-module"
 - Redis
 - Permission folder
 
@@ -74,4 +75,5 @@ cat /usr/local/share/ca-certificates/git.vimpelcom.ru.pem | tee -a /etc/ssl/cert
 
 ## todo лист
 
-1) Пилить пакет в https://github.com/cusodede/
+1) Избавиться от checkS3Health() как переведем работу на пакет "cusodede/yii2-s3-module"
+2) Пилить пакет в https://github.com/cusodede/

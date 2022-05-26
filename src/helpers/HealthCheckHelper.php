@@ -6,6 +6,9 @@ namespace dspl\healthcheck\helpers;
 use app\modules\api\models\jobs\EmptyJob;
 use app\modules\s3\helpers\S3Helper;
 use app\modules\s3\models\S3;
+use cusodede\s3\helpers\S3Helper as S3HelperVendor;
+use cusodede\s3\models\S3 as S3Vendor;
+use cusodede\s3\S3Module;
 use Throwable;
 use Yii;
 use yii\base\Exception as BaseException;
@@ -24,6 +27,7 @@ class HealthCheckHelper
     public const DB = 'Health DB';
     public const RABBITMQ = 'Health RABBITMQ';
     public const MINIO = 'Health MINIO';
+    public const MINIO_CUSODEDE = 'Health vendor MINIO';
     public const REDIS = 'Health REDIS';
     public const WRITABLE = 'Writable files';
 
@@ -45,7 +49,10 @@ class HealthCheckHelper
                 $this->checkRabbitMq();
                 break;
             case self::MINIO:
-                $this->checkS3Health();
+                $this->checkS3HealthV1();
+                break;
+            case self::MINIO_CUSODEDE:
+                $this->checkS3HealthV2();
                 break;
             case self::REDIS:
                 $this->checkRedis();
@@ -122,8 +129,9 @@ class HealthCheckHelper
      * @return void
      * @throws Throwable
      * @throws BaseException
+     * @deprecated переделать на пакетное решение checkS3HealthV2
      */
-    private function checkS3Health(): void
+    private function checkS3HealthV1(): void
     {
         $s3 = (new S3());
         $s3->setTimeout(5);
@@ -134,6 +142,28 @@ class HealthCheckHelper
         $cloudObject = S3Helper::FileToStorage($filePathForUpload);
         unlink($filePathForUpload);
         $filePathFromS3 = S3Helper::StorageToFile($cloudObject->id);
+        if (false === file_exists($filePathFromS3)) {
+            unlink($filePathFromS3);
+            throw new BaseException('Ошибка при загрузке файла');
+        }
+        unlink($filePathFromS3);
+    }
+
+    /**
+     * Проверяем доступность s3 подключения
+     * @return void
+     * @throws Throwable
+     * @throws BaseException
+     */
+    private function checkS3HealthV2(): void
+    {
+        $s3 = (new S3Vendor());
+        $s3->getListBucketMap();
+        $filePathForUpload = self::GetRandomTempFileName('test', 'csv');
+        file_put_contents($filePathForUpload, '');
+        $cloudObject = S3HelperVendor::FileToStorage($filePathForUpload, null, S3Module::param("defaultBucket"));
+        unlink($filePathForUpload);
+        $filePathFromS3 = S3HelperVendor::StorageToFile($cloudObject->id);
         if (false === file_exists($filePathFromS3)) {
             unlink($filePathFromS3);
             throw new BaseException('Ошибка при загрузке файла');
