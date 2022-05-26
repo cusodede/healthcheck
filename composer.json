@@ -1,0 +1,25 @@
+{
+  "name": "dspl/healthcheck",
+  "description": "Health Check your application",
+  "type": "yii2-extension",
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^8.0|^8.1",
+    "pozitronik/yii2-exceptionslogger": "^1.0.0",
+    "yiisoft/yii2": "^2.0.45"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "autoload": {
+    "psr-4": {
+      "dspl\\healthcheck\\": "src"
+    }
+  },
+  "config": {
+    "process-timeout": 1800,
+    "fxp-asset": {
+      "enabled": false
+    }
+  }
+}
