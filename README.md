@@ -1,6 +1,7 @@
 # Healthсheck
 
 ## Пакет предоставляет реализацию проверок жизнеспособности приложения
+
 [Спецификация](https://confluence.veon.com/pages/viewpage.action?pageId=173167558)
 
 - Database
@@ -35,16 +36,16 @@ _Некоторые проверки специфические, поэтому 
 
 ```json
 "require": {
-    "dspl/healthcheck": "^1.0.0"
+"dspl/healthcheck": "^1.0.0"
 }
 ```
 
 ```json
 "repositories": [
-    {
-        "type": "vcs",
-        "url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
-    }
+{
+"type": "vcs",
+"url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
+}
 ]
 ```
 
@@ -56,7 +57,8 @@ composer config gitlab-token.git.vimpelcom.ru <ДОМЕННЫЙ ЛОГИН> <Т�
 
 ## Решение ошибок
 
-> fatal: unable to access 'https://git.vimpelcom.ru/products/dspl/validators.git/': server certificate verification failed. CAfile: none CRLfile: none
+> fatal: unable to access 'https://git.vimpelcom.ru/products/dspl/validators.git/': server certificate verification
+> failed. CAfile: none CRLfile: none
 
 Получим сертификат с git.vimpelcom.ru
 
@@ -69,7 +71,6 @@ openssl s_client -showcerts -servername git.vimpelcom.ru -connect git.vimpelcom.
 ```bash
 cat /usr/local/share/ca-certificates/git.vimpelcom.ru.pem | tee -a /etc/ssl/certs/ca-certificates.crt
 ```
-
 
 ## todo лист
 
