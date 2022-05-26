@@ -34,7 +34,7 @@ class HealthCheckAction extends Action
     }
 
     /**
-     * Запуск экшена
+     * Run action
      * @return string
      */
     public function run(): string

@@ -61,7 +61,7 @@ class HealthCheckHelper
                 $this->checkFileIsWritable();
                 break;
             default:
-                throw new InvalidConfigException("Не назначена проверка для типа - {$checkType}");
+                throw new InvalidConfigException("Не назначена проверка для типа - $checkType");
         }
     }
 
@@ -78,7 +78,7 @@ class HealthCheckHelper
         $runtimeLogFolder = Yii::getAlias('@runtime/logs');
 
         $perms = substr(sprintf('%o', fileperms($assetsFolder)), -1);
-        if (false === is_writable($assetsFolder) || 7 !== (int)$perms) {
+        if (7 !== (int)$perms || false === is_writable($assetsFolder)) {
             throw new InvalidConfigException("Папка $assetsFolder не доступна для записи");
         }
 
@@ -93,7 +93,7 @@ class HealthCheckHelper
 
     /**
      * Пушим в тестовую очередь
-     * Проверяем доступность rabbitMq
+     * проверяем доступность rabbitMq
      * @return void
      */
     private function checkRabbitMq(): void
