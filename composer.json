@@ -5,7 +5,6 @@
   "minimum-stability": "stable",
   "require": {
     "php": "^8.0|^8.1",
-    "pozitronik/yii2-exceptionslogger": "^1.0.0",
     "yiisoft/yii2": "^2.0.45"
   },
   "require-dev": {
