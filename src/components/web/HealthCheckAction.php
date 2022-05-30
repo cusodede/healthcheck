@@ -21,7 +21,17 @@ class HealthCheckAction extends Action
     public const HEALTHY = 'Healthy';
     public const UNHEALTHY = 'Unhealthy';
 
+    /**
+     * Список компонентов для проверки
+     * @var array
+     */
     public array $componentsForCheck = [];
+
+    /**
+     * Функция обработки ошибок если она нужна
+     * @var mixed
+     */
+    public mixed $errorHandler = null;
 
     /**
      * @inheritDoc
@@ -34,7 +44,7 @@ class HealthCheckAction extends Action
     }
 
     /**
-     * Run action
+     * Запуск экшена
      * @return string
      */
     public function run(): string
@@ -45,13 +55,20 @@ class HealthCheckAction extends Action
 
         $checkHelper = new HealthCheckHelper();
         try {
-            foreach ($this->componentsForCheck as $componentId) {
-                $checkHelper->check($componentId);
+            foreach ($this->componentsForCheck as $checkComponent) {
+                if (is_callable($checkComponent)) {
+                    $checkComponent();
+                } else {
+                    $checkHelper->check($checkComponent);
+                }
             }
             Yii::$app->response->setStatusCode(200, self::HEALTHY);
             Yii::$app->response->content = self::HEALTHY;
         } catch (Throwable $throwable) {
-            SysExceptions::log($throwable);
+            $func = $this->errorHandler;
+            if (is_callable($func)) {
+                $func($throwable);
+            }
             Yii::$app->response->setStatusCode(503, self::UNHEALTHY);
             Yii::$app->response->content = self::UNHEALTHY;
         }
