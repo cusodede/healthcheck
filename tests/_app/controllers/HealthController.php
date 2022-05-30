@@ -22,12 +22,36 @@ class HealthController extends Controller
     public function actions(): array
     {
         return [
-            'index' => [
+            'db' => [
                 'class' => HealthCheckAction::class,
                 'componentsForCheck' => [
                     HealthCheckHelper::DB,
+                ],
+                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
+                    Yii::debug($error->getMessage());
+                }
+            ],
+            'redis' => [
+                'class' => HealthCheckAction::class,
+                'componentsForCheck' => [
                     HealthCheckHelper::REDIS,
+                ],
+                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
+                    Yii::debug($error->getMessage());
+                }
+            ],
+            'writable' => [
+                'class' => HealthCheckAction::class,
+                'componentsForCheck' => [
                     HealthCheckHelper::WRITABLE,
+                ],
+                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
+                    Yii::debug($error->getMessage());
+                }
+            ],
+            'custom' => [
+                'class' => HealthCheckAction::class,
+                'componentsForCheck' => [
                     function () { //кастомная проверка любого компонента системы
                         Yii::$app->queue->push(
                             new EmptyJob([
@@ -37,9 +61,9 @@ class HealthController extends Controller
                     },
                 ],
                 'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
-                    Yii::$app->log($error->getMessage());
+                    Yii::debug($error->getMessage());
                 }
-            ]
+            ],
         ];
     }
 }
