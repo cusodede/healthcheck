@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace _app\controllers;
+namespace app\controllers;
 
 use app\models\jobs\EmptyJob;
 use dspl\healthcheck\components\web\HealthCheckAction;
