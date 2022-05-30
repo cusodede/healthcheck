@@ -28,7 +28,6 @@ class HealthCheckCest
     /**
      * @param FunctionalTester $I
      * @throws Throwable
-     * @skip
      */
     public function redis(FunctionalTester $I): void
     {
