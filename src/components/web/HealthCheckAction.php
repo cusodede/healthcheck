@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace dspl\healthcheck\components\web;
 
 use dspl\healthcheck\helpers\HealthCheckHelper;
-use pozitronik\sys_exceptions\models\SysExceptions;
 use Throwable;
 use Yii;
 use yii\base\Action;
