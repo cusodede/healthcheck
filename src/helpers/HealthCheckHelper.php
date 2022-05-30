@@ -56,7 +56,7 @@ class HealthCheckHelper
     private function checkFileIsWritable(): void
     {
         //min chmod 007 runtime
-        $assetsFolder = Yii::getAlias('@webroot/assets');
+        $assetsFolder = Yii::getAlias(Yii::$app->assetManager->basePath);
         $runtimeFolder = Yii::getAlias('@runtime');
         $runtimeLogFolder = Yii::getAlias('@runtime/logs');
 
