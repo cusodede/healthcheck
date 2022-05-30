@@ -39,7 +39,6 @@ class HealthCheckCest
     /**
      * @param FunctionalTester $I
      * @throws Throwable
-     * @skip
      */
     public function writable(FunctionalTester $I): void
     {
