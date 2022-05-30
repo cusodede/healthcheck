@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /**
  * @var View $this
@@ -13,7 +14,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 <div class="row">
-	<div class="col-md-12">
-		<?= $form->field($model, 'username')->textInput(['maxlength' => 50]) ?>
-	</div>
+    <div class="col-md-12">
+        <?= $form->field($model, 'username')->textInput(['maxlength' => 50]) ?>
+    </div>
 </div>

@@ -1,5 +1,7 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
 use Codeception\Actor;
 
 /**
@@ -17,10 +19,11 @@ use Codeception\Actor;
  *
  * @SuppressWarnings(PHPMD)
  */
-class ConsoleTester extends Actor {
-	use _generated\ConsoleTesterActions;
+class ConsoleTester extends Actor
+{
+    use _generated\ConsoleTesterActions;
 
-	/**
-	 * Define custom actions here
-	 */
+    /**
+     * Define custom actions here
+     */
 }

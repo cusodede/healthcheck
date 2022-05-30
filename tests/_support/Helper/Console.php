@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Helper;
 
@@ -11,6 +12,7 @@ use Codeception\Module;
 /**
  * Class Console
  */
-class Console extends Module {
+class Console extends Module
+{
 
 }

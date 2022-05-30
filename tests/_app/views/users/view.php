@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /**
  * @var View $this
@@ -13,5 +14,5 @@ use yii\widgets\DetailView;
 ?>
 
 <?= DetailView::widget([
-	'model' => $model
+    'model' => $model
 ]) ?>
