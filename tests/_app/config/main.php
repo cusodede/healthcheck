@@ -11,6 +11,7 @@ use yii\web\AssetManager;
 use yii\web\ErrorHandler;
 
 $db = require __DIR__ . '/db.php';
+$redis = require __DIR__ . '/redis.php';
 
 $config = [
     'id' => 'basic',
@@ -56,6 +57,7 @@ $config = [
             'basePath' => '@app/assets'
         ],
         'db' => $db,
+        'redis' => $redis,
         'queue' => [
             'class' => Queue::class,
             'path' => '@runtime/queues/common',

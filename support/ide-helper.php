@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 use yii\BaseYii;
 use yii\queue\Queue;
+use yii\redis\Connection;
 
 /**
  * Yii bootstrap file.
@@ -22,6 +23,7 @@ class Yii extends BaseYii {
  * Used for properties that are identical for both WebApplication and ConsoleApplication
  *
  * @property Queue $queue
+ * @property Connection $redis
  */
 abstract class BaseApplication extends yii\base\Application {
 
