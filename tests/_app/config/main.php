@@ -57,11 +57,9 @@ $config = [
         ],
         'db' => $db,
         'queue' => [
-            'common' => [ // общая очередь (импорты и т.д.)
-                'class' => Queue::class,
-                'path' => '@runtime/queues/common',
-                'ttr' => 36000 /*часик в радость*/
-            ]
+            'class' => Queue::class,
+            'path' => '@runtime/queues/common',
+            'ttr' => 36000 /*часик в радость*/
         ]
     ],
     'params' => [
