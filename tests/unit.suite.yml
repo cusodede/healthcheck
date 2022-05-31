@@ -16,4 +16,3 @@ modules:
 extensions:
   enabled:
     - Codeception\Extension\RunFailed
-    - Extensions\DatabaseMigrationExtension
