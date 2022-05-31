@@ -65,7 +65,7 @@ class HealthCheckAction extends Action
             Yii::$app->response->content = self::HEALTHY;
         } catch (Throwable $throwable) {
             $func = $this->errorHandler;
-            if (is_callable($func)) {
+            if (is_callable($func, true)) {
                 $func($throwable);
             }
             Yii::$app->response->setStatusCode(503, self::UNHEALTHY);
