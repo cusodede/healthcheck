@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\models\jobs\EmptyJob;
 use dspl\healthcheck\components\web\HealthCheckAction;
 use dspl\healthcheck\helpers\HealthCheckHelper;
+use yii\base\ErrorException;
 use yii\rest\Controller;
 use Yii;
 use Throwable;
@@ -16,6 +17,9 @@ use Throwable;
  */
 class HealthController extends Controller
 {
+
+    public static ?string $LAST_ERROR = null;
+
     /**
      * @inheritDoc
      */
@@ -27,27 +31,21 @@ class HealthController extends Controller
                 'componentsForCheck' => [
                     HealthCheckHelper::DB,
                 ],
-                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
-                    Yii::debug($error->getMessage());
-                }
+                'errorHandler' => [static::class, "ErrorHandler"]
             ],
             'redis' => [
                 'class' => HealthCheckAction::class,
                 'componentsForCheck' => [
                     HealthCheckHelper::REDIS,
                 ],
-                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
-                    Yii::debug($error->getMessage());
-                }
+                'errorHandler' => [static::class, "ErrorHandler"]
             ],
             'writable' => [
                 'class' => HealthCheckAction::class,
                 'componentsForCheck' => [
                     HealthCheckHelper::WRITABLE,
                 ],
-                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
-                    Yii::debug($error->getMessage());
-                }
+                'errorHandler' => [static::class, "ErrorHandler"]
             ],
             'custom' => [
                 'class' => HealthCheckAction::class,
@@ -60,10 +58,26 @@ class HealthController extends Controller
                         );
                     },
                 ],
-                'errorHandler' => function (Throwable $error) { //навеска на отлов ошибок
-                    Yii::debug($error->getMessage());
-                }
+                'errorHandler' => [static::class, "ErrorHandler"]
             ],
+            'error' => [
+                'class' => HealthCheckAction::class,
+                'componentsForCheck' => [
+                    function () {
+                        throw new ErrorException('Something bad happened');
+                    },
+                ],
+                'errorHandler' => [static::class, "ErrorHandler"]
+            ]
         ];
+    }
+
+    /**
+     * @param Throwable $error
+     * @return void
+     */
+    public static function ErrorHandler(Throwable $error): void
+    {
+        static::$LAST_ERROR = $error->getMessage();
     }
 }
