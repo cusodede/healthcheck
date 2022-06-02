@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace dspl\healthcheck\components\web;
 
 use dspl\healthcheck\helpers\HealthCheckHelper;
-use pozitronik\sys_exceptions\models\SysExceptions;
 use Throwable;
 use Yii;
 use yii\base\Action;
@@ -66,7 +65,7 @@ class HealthCheckAction extends Action
             Yii::$app->response->content = self::HEALTHY;
         } catch (Throwable $throwable) {
             $func = $this->errorHandler;
-            if (is_callable($func)) {
+            if (is_callable($func, true)) {
                 $func($throwable);
             }
             Yii::$app->response->setStatusCode(503, self::UNHEALTHY);

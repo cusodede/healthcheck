@@ -13,7 +13,7 @@
 
 ```php
 class HealthController extends yii\rest\Controller {
-    ...
+	...
 	/**
 	 * @inheritDoc
 	 */
@@ -26,18 +26,18 @@ class HealthController extends yii\rest\Controller {
 					HealthCheckHelper::REDIS,
 					HealthCheckHelper::WRITABLE,
 					function() { //кастомная проверка любого компонента системы
-                        Yii::$app->mqHealthCheck->push(new EmptyJob([
-                            'message' => 'test from psb',
-                        ]));
-                    },
+						Yii::$app->mqHealthCheck->push(new EmptyJob([
+							'message' => 'test from psb',
+						]));
+					},
 				],
 				'errorHandler' => function($error) { //навеска на отлов ошибок
-                    SysExceptions::log($error);
-                }
+					SysExceptions::log($error);
+				}
 			]
 		];
 	}
-	
+
 	...
 }
 ```
@@ -46,16 +46,16 @@ class HealthController extends yii\rest\Controller {
 
 ```json
 "require": {
-"dspl/healthcheck": "^1.0.0"
+	"dspl/healthcheck": "^1.0.0"
 }
 ```
 
 ```json
 "repositories": [
-{
-"type": "vcs",
-"url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
-}
+	{
+		"type": "vcs",
+		"url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
+	}
 ]
 ```
 
