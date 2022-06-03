@@ -7,12 +7,12 @@ build:
 test: test80 test81
 test80:
 	docker-compose build --pull php80
-	docker-compose run php80 vendor/bin/codecept run -v --debug
+	docker-compose run php80 vendor/bin/codecept run -v --debug && rm -rf tests/_app/runtime/queues
 	docker-compose down
 
 test81:
 	docker-compose build --pull php81
-	docker-compose run php81 vendor/bin/codecept run -v --debug
+	docker-compose run php81 vendor/bin/codecept run -v --debug && rm -rf tests/_app/runtime/queues
 	docker-compose down
 
 clean:
