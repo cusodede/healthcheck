@@ -55,13 +55,11 @@ class HealthCheckHelper
      */
     private function checkFileIsWritable(): void
     {
-        //min chmod 007 runtime
         $assetsFolder = Yii::getAlias(Yii::$app->assetManager->basePath);
         $runtimeFolder = Yii::getAlias('@runtime');
         $runtimeLogFolder = Yii::getAlias('@runtime/logs');
 
-        $perms = substr(sprintf('%o', fileperms($assetsFolder)), -1);
-        if (7 !== (int)$perms || false === is_writable($assetsFolder)) {
+        if (false === is_writable($assetsFolder)) {
             throw new InvalidConfigException("Папка $assetsFolder не доступна для записи");
         }
 
