@@ -2,5 +2,5 @@
 .env
 composer.lock
 ./tests/.env
-./tests/runtime/composer-install.lock
-./tests/runtime/.composer80/*
+./tests/runtime/*
+!./tests/runtime/.gitkeep
