@@ -1,6 +1,6 @@
 # Healthсheck
 
-## Пакет предоставляет реализацию проверок жизнеспособности приложения
+Пакет предоставляет реализацию проверок жизнеспособности приложения
 
 [Спецификация](https://confluence.veon.com/pages/viewpage.action?pageId=173167558)
 
@@ -13,32 +13,32 @@
 
 ```php
 class HealthController extends yii\rest\Controller {
-	...
-	/**
-	 * @inheritDoc
-	 */
-	public function actions():array {
-		return [
-			'index' => [
-				'class' => HealthCheckAction::class,
-				'componentsForCheck' => [
-					HealthCheckHelper::DB,
-					HealthCheckHelper::REDIS,
-					HealthCheckHelper::WRITABLE,
-					function() { //кастомная проверка любого компонента системы
-						Yii::$app->mqHealthCheck->push(new EmptyJob([
-							'message' => 'test from psb',
-						]));
-					},
-				],
-				'errorHandler' => function($error) { //навеска на отлов ошибок
-					SysExceptions::log($error);
-				}
-			]
-		];
-	}
+    ...
+    /**
+     * @inheritDoc
+     */
+    public function actions():array {
+        return [
+            'index' => [
+                'class' => HealthCheckAction::class,
+                'componentsForCheck' => [
+                    HealthCheckHelper::DB,
+                    HealthCheckHelper::REDIS,
+                    HealthCheckHelper::WRITABLE,
+                    function() { //кастомная проверка любого компонента системы
+                        Yii::$app->mqHealthCheck->push(new EmptyJob([
+                            'message' => 'test from psb',
+                        ]));
+                    },
+                ],
+                'errorHandler' => function($error) { //навеска на отлов ошибок
+                    SysExceptions::log($error);
+                }
+            ]
+        ];
+    }
 
-	...
+    ...
 }
 ```
 
@@ -46,16 +46,16 @@ class HealthController extends yii\rest\Controller {
 
 ```json
 "require": {
-	"dspl/healthcheck": "^1.0.0"
+    "dspl/healthcheck": "^1.0.0"
 }
 ```
 
 ```json
 "repositories": [
-	{
-		"type": "vcs",
-		"url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
-	}
+    {
+        "type": "vcs",
+        "url": "https://git.vimpelcom.ru/products/dspl/healthcheck"
+    }
 ]
 ```
 
@@ -82,6 +82,19 @@ openssl s_client -showcerts -servername git.vimpelcom.ru -connect git.vimpelcom.
 cat /usr/local/share/ca-certificates/git.vimpelcom.ru.pem | tee -a /etc/ssl/certs/ca-certificates.crt
 ```
 
+## Запуск тестов
+
+Подготовка окружение (при первом использовании)
+
+```bash
+make build
+```
+
+Запуск тестов
+
+```bash
+make test
+```
+
 ## todo лист
 
-1) Пилить пакет в https://github.com/cusodede/
