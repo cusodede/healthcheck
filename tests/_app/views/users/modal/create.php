@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 
 use app\models\Users;
-use pozitronik\widgets\BadgeWidget;
 use yii\web\View;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Modal;
@@ -19,10 +18,7 @@ $modelName = $model->formName();
 Modal::begin([
     'id' => "{$modelName}-modal-create-new",
     'size' => Modal::SIZE_LARGE,
-    'title' => BadgeWidget::widget([
-        'items' => $model,
-        'subItem' => 'id'
-    ]),
+    'title' => 'create',
     'footer' => $this->render('../subviews/editPanelFooter', [
         'model' => $model,
         'form' => "{$modelName}-modal-create"

@@ -31,8 +31,7 @@ class UsersSearch extends Users
      */
     public function search(array $params): ActiveDataProvider
     {
-        $query = Users::find()
-            ->active();
+        $query = Users::find();
 
         $dataProvider = new ActiveDataProvider([
             'id' => 'usersDataProvider',
@@ -45,25 +44,24 @@ class UsersSearch extends Users
             'defaultOrder' => ['id' => SORT_ASC],
             'attributes' => [
                 'id' => [
-                    'asc' => [Users::fieldName('id') => SORT_ASC],
-                    'desc' => [Users::fieldName('id') => SORT_DESC]
+                    'asc' => ['id' => SORT_ASC],
+                    'desc' => ['id' => SORT_DESC]
                 ],
                 'username' => [
-                    'asc' => [Users::fieldName('username') => SORT_ASC],
-                    'desc' => [Users::fieldName('username') => SORT_DESC]
+                    'asc' => ['username' => SORT_ASC],
+                    'desc' => ['username' => SORT_DESC]
                 ],
                 'login' => [
-                    'asc' => [Users::fieldName('login') => SORT_ASC],
-                    'desc' => [Users::fieldName('login') => SORT_DESC]
+                    'asc' => ['login' => SORT_ASC],
+                    'desc' => ['login' => SORT_DESC]
                 ]
             ]
         ]);
 
         $this->load($params);
-        $query->andFilterWhere([static::fieldName('id') => $this->id]);
-        $query->andFilterWhere(['like', static::fieldName('username'), $this->username]);
-        $query->andFilterWhere(['like', static::fieldName('login'), $this->login]);
-
+        $query->andFilterWhere(['id' => $this->id]);
+        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->andFilterWhere(['like', 'login', $this->login]);
 
         return $dataProvider;
     }

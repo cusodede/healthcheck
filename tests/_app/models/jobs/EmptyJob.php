@@ -18,6 +18,7 @@ class EmptyJob implements JobInterface
 
     /**
      * @inheritDoc
+     * @noinspection PhpUndefinedMethodInspection
      */
     public function execute($queue)
     {
