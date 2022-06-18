@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace app\models;
 
-use pozitronik\helpers\Utils;
-use pozitronik\traits\traits\ActiveRecordTrait;
 use Yii;
 use yii\base\Event;
 use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\web\IdentityInterface;
 
 /**
@@ -24,7 +21,6 @@ use yii\web\IdentityInterface;
  */
 class Users extends ActiveRecord implements IdentityInterface
 {
-    use ActiveRecordTrait;
 
     /**
      * @inheritDoc
@@ -135,19 +131,5 @@ class Users extends ActiveRecord implements IdentityInterface
         ]);
     }
 
-    /**
-     * @return static
-     * @throws Exception
-     */
-    public function saveAndReturn(): static
-    {
-        if (!$this->save()) {
-            throw new Exception(
-                sprintf("Не получилось сохранить запись: %s", Utils::Errors2String($this->firstErrors))
-            );
-        }
-        $this->refresh();
-        return $this;
-    }
 
 }

@@ -26,9 +26,9 @@ Modal::begin([
         'class' => 'modal-dialog-large'
     ]
 ]); ?>
-    <div class="text-center">
-        <p><?= nl2br(Html::encode($exception->getMessage())) ?></p>
-        <div><i class="fa fa-spinner fa-pulse fa-3x fa-fw text-primary"></i></div>
-    </div>
+<div class="text-center">
+    <p><?= nl2br(Html::encode($exception->getMessage())) ?></p>
+    <div><i class="fa fa-spinner fa-pulse fa-3x fa-fw text-primary"></i></div>
+</div>
 <?php
 Modal::end(); ?>

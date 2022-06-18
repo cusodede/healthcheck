@@ -1,46 +1,37 @@
 <?php
+
 declare(strict_types=1);
 
 namespace dspl\healthcheck\components\web;
 
-use dspl\healthcheck\helpers\HealthCheckHelper;
+use dspl\healthcheck\models\HealthCheckInterface;
 use Throwable;
 use Yii;
 use yii\base\Action;
-use yii\base\InvalidConfigException;
 use yii\web\Response;
 
 /**
  * Действие проверки работоспособности приложения
  * Class HealthCheckAction
- * @package dspl\healthcheck\components\web
+ *
  */
 class HealthCheckAction extends Action
 {
     public const HEALTHY = 'Healthy';
     public const UNHEALTHY = 'Unhealthy';
+    public static string $LAST_ERROR;
 
     /**
      * Список компонентов для проверки
-     * @var array
+     * @var HealthCheckInterface[]
      */
-    public array $componentsForCheck = [];
+    public array $healthCheckComponents = [];
 
     /**
      * Функция обработки ошибок если она нужна
      * @var mixed
      */
     public mixed $errorHandler = null;
-
-    /**
-     * @inheritDoc
-     */
-    public function init(): void
-    {
-        if ([] === $this->componentsForCheck) {
-            throw new InvalidConfigException('Не указан ни один из компонентов для проверки');
-        }
-    }
 
     /**
      * Запуск экшена
@@ -52,24 +43,30 @@ class HealthCheckAction extends Action
         Yii::$app->response->headers->set('Content-Type', 'text/plain; charset=utf-8');
         Yii::$app->response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
 
-        $checkHelper = new HealthCheckHelper();
-        try {
-            foreach ($this->componentsForCheck as $checkComponent) {
-                if (is_callable($checkComponent)) {
-                    $checkComponent();
-                } else {
-                    $checkHelper->check($checkComponent);
-                }
+        foreach ($this->healthCheckComponents as $checkComponentConfig) {
+            if (is_array($checkComponentConfig)) {//[class, params, errorHandler]
+                $checkComponentConfig = array_pad($checkComponentConfig, 3, null);
+                [$checkComponent, $params, $errorHandler] = $checkComponentConfig;
+            } else {
+                $checkComponent = $checkComponentConfig;//just class
             }
-            Yii::$app->response->setStatusCode(200, self::HEALTHY);
-            Yii::$app->response->content = self::HEALTHY;
-        } catch (Throwable $throwable) {
-            $func = $this->errorHandler;
-            if (is_callable($func, true)) {
-                $func($throwable);
+
+            $checkComponent = is_callable($checkComponent) ? $checkComponent : [$checkComponent, 'check'];
+
+            try {
+                $result = $checkComponent($params ?? [], $errorHandler ?? null);
+            } catch (Throwable $throwable) {
+                $result = false;
+                self::$LAST_ERROR = $throwable->getMessage();
             }
-            Yii::$app->response->setStatusCode(503, self::UNHEALTHY);
-            Yii::$app->response->content = self::UNHEALTHY;
+
+            if ($result) {
+                Yii::$app->response->setStatusCode(200, self::HEALTHY);
+                Yii::$app->response->content = self::HEALTHY;
+            } else {
+                Yii::$app->response->setStatusCode(503, self::UNHEALTHY);
+                Yii::$app->response->content = self::UNHEALTHY;
+            }
         }
 
         return Yii::$app->response->content;
