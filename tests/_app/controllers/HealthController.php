@@ -6,11 +6,12 @@ namespace app\controllers;
 
 use app\models\jobs\EmptyJob;
 use dspl\healthcheck\components\web\HealthCheckAction;
-use dspl\healthcheck\helpers\HealthCheckHelper;
+use dspl\healthcheck\models\DbHealthCheck;
+use dspl\healthcheck\models\PathAccessHealthCheck;
+use dspl\healthcheck\models\RedisHealthCheck;
 use yii\base\ErrorException;
 use yii\rest\Controller;
 use Yii;
-use Throwable;
 
 /**
  * Testing tests and shit
@@ -28,56 +29,49 @@ class HealthController extends Controller
         return [
             'db' => [
                 'class' => HealthCheckAction::class,
-                'componentsForCheck' => [
-                    HealthCheckHelper::DB,
-                ],
-                'errorHandler' => [static::class, "ErrorHandler"]
+                'healthCheckComponents' => [
+                    DbHealthCheck::class,
+                ]
             ],
             'redis' => [
                 'class' => HealthCheckAction::class,
-                'componentsForCheck' => [
-                    HealthCheckHelper::REDIS,
+                'healthCheckComponents' => [
+                    RedisHealthCheck::class
                 ],
-                'errorHandler' => [static::class, "ErrorHandler"]
+
             ],
             'writable' => [
                 'class' => HealthCheckAction::class,
-                'componentsForCheck' => [
-                    HealthCheckHelper::WRITABLE,
+                'healthCheckComponents' => [
+                    [
+                        PathAccessHealthCheck::class,
+                        ['path' => [Yii::$app->assetManager->basePath, '@runtime', '@runtime/logs']]
+                    ]
                 ],
-                'errorHandler' => [static::class, "ErrorHandler"]
             ],
             'custom' => [
                 'class' => HealthCheckAction::class,
-                'componentsForCheck' => [
+                'healthCheckComponents' => [
                     function () { //кастомная проверка любого компонента системы
+                        /** @noinspection PhpMethodParametersCountMismatchInspection */
                         Yii::$app->queue->push(
                             new EmptyJob([
                                 'message' => 'test from psb',
                             ])
                         );
+                        return true;
                     },
                 ],
-                'errorHandler' => [static::class, "ErrorHandler"]
             ],
             'error' => [
                 'class' => HealthCheckAction::class,
-                'componentsForCheck' => [
+                'healthCheckComponents' => [
                     function () {
                         throw new ErrorException('Something bad happened');
-                    },
+                    }
                 ],
-                'errorHandler' => [static::class, "ErrorHandler"]
             ]
         ];
     }
 
-    /**
-     * @param Throwable $error
-     * @return void
-     */
-    public static function ErrorHandler(Throwable $error): void
-    {
-        static::$LAST_ERROR = $error->getMessage();
-    }
 }
