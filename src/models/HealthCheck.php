@@ -16,6 +16,10 @@ abstract class HealthCheck implements HealthCheckInterface
      * @var string|null
      */
     public static ?string $LAST_ERROR = null;
+    /**
+     * @var string|null
+     */
+    public static ?string $DEGRADED_MESSAGE = null;
 
     /**
      * @param Throwable $error

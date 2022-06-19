@@ -34,6 +34,12 @@ class HealthController extends Controller
                     DbHealthCheck::class,
                 ]
             ],
+            'db_timeout' => [
+                'class' => HealthCheckAction::class,
+                'healthCheckComponents' => [
+                    [DbHealthCheck::class, ['degrade_timeout' => 1]]
+                ]
+            ],
             'redis' => [
                 'class' => HealthCheckAction::class,
                 'healthCheckComponents' => [
