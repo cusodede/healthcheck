@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /**
  * @var View $this
@@ -16,25 +16,25 @@ $modelName = $model->formName();
 ?>
 <?php
 Modal::begin([
-    'id' => "{$modelName}-modal-create-new",
-    'size' => Modal::SIZE_LARGE,
-    'title' => 'create',
-    'footer' => $this->render('../subviews/editPanelFooter', [
-        'model' => $model,
-        'form' => "{$modelName}-modal-create"
-    ]),//post button outside the form
-    'options' => [
-        'tabindex' => false, // important for Select2 to work properly
-        'class' => 'modal-dialog-large'
-    ]
+	'id' => "{$modelName}-modal-create-new",
+	'size' => Modal::SIZE_LARGE,
+	'title' => 'create',
+	'footer' => $this->render('../subviews/editPanelFooter', [
+		'model' => $model,
+		'form' => "{$modelName}-modal-create"
+	]),//post button outside the form
+	'options' => [
+		'tabindex' => false, // important for Select2 to work properly
+		'class' => 'modal-dialog-large'
+	]
 ]); ?>
 <?php
 $form = ActiveForm::begin(
-    [
-        'id' => "{$modelName}-modal-create",
-        'enableAjaxValidation' => true,
+	[
+		'id' => "{$modelName}-modal-create",
+		'enableAjaxValidation' => true,
 
-    ]
+	]
 )
 ?>
 <?= $this->render('../subviews/editPanelBody', compact('model', 'form')) ?>

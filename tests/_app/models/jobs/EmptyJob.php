@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace app\models\jobs;
 
@@ -11,18 +11,16 @@ use yii\queue\JobInterface;
  * Class EmptyJob
  * @property null|string $message
  */
-class EmptyJob implements JobInterface
-{
+class EmptyJob implements JobInterface {
 
-    public ?string $message = null;
+	public ?string $message = null;
 
-    /**
-     * @inheritDoc
-     * @noinspection PhpUndefinedMethodInspection
-     */
-    public function execute($queue)
-    {
-        Yii::$app->log($this->message);
-    }
+	/**
+	 * @inheritDoc
+	 * @noinspection PhpUndefinedMethodInspection
+	 */
+	public function execute($queue) {
+		Yii::$app->log($this->message);
+	}
 
 }
