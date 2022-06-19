@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /**
  * @var View $this
@@ -15,13 +15,13 @@ $modelName = $model->formName();
 ?>
 <?php
 Modal::begin([
-    'id' => "{$modelName}-modal-view-{$model->id}",
-    'size' => Modal::SIZE_LARGE,
-    'title' => 'view',
-    'options' => [
-        'tabindex' => false, // important for Select2 to work properly
-        'class' => 'modal-dialog-large'
-    ]
+	'id' => "{$modelName}-modal-view-{$model->id}",
+	'size' => Modal::SIZE_LARGE,
+	'title' => 'view',
+	'options' => [
+		'tabindex' => false, // important for Select2 to work properly
+		'class' => 'modal-dialog-large'
+	]
 ]); ?>
 <?= $this->render('../view', compact('model')) ?>
 <?php
