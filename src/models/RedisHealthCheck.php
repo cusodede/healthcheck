@@ -25,7 +25,7 @@ class RedisHealthCheck extends HealthCheck
      *    key: optional key
      *    value: optional value
      */
-    public static function check(array $config = [], ?callable $errorHandler = null): bool
+    public static function check(array $config = [], ?callable $errorHandler = null): string
     {
         $errorHandler = $errorHandler ?? [__CLASS__, 'errorHandler'];
         try {
@@ -36,12 +36,12 @@ class RedisHealthCheck extends HealthCheck
 
             if (Yii::$app->redis->get($key) !== $value) {
                 $errorHandler(new Exception('Ошибка при получении ключа из redis'));
-                return false;
+                return static::STATUS_UNHEALTHY;
             }
-            return true;
+            return static::STATUS_HEALTHY;
         } catch (Throwable $throwable) {
             $errorHandler($throwable);
-            return false;
+            return static::STATUS_UNHEALTHY;
         }
     }
 }

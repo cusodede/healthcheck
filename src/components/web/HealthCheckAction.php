@@ -17,8 +17,6 @@ use yii\web\Response;
  */
 class HealthCheckAction extends Action
 {
-    public const HEALTHY = 'Healthy';
-    public const UNHEALTHY = 'Unhealthy';
     public static string $LAST_ERROR;
 
     /**
@@ -54,18 +52,22 @@ class HealthCheckAction extends Action
             $checkComponent = is_callable($checkComponent) ? $checkComponent : [$checkComponent, 'check'];
 
             try {
-                $result = $checkComponent($params ?? [], $errorHandler ?? null);
+                Yii::$app->response->content = $checkComponent($params ?? [], $errorHandler ?? null);
             } catch (Throwable $throwable) {
-                $result = false;
+                Yii::$app->response->content = HealthCheckInterface::STATUS_UNHEALTHY;
                 self::$LAST_ERROR = $throwable->getMessage();
             }
 
-            if ($result) {
-                Yii::$app->response->setStatusCode(200, self::HEALTHY);
-                Yii::$app->response->content = self::HEALTHY;
-            } else {
-                Yii::$app->response->setStatusCode(503, self::UNHEALTHY);
-                Yii::$app->response->content = self::UNHEALTHY;
+            switch (Yii::$app->response->content) {
+                case HealthCheckInterface::STATUS_HEALTHY:
+                    Yii::$app->response->setStatusCode(200, HealthCheckInterface::STATUS_HEALTHY);
+                    break;
+                case HealthCheckInterface::STATUS_UNHEALTHY:
+                    Yii::$app->response->setStatusCode(503, HealthCheckInterface::STATUS_UNHEALTHY);
+                    break;
+                case HealthCheckInterface::STATUS_DEGRADED:
+                    Yii::$app->response->setStatusCode(200, HealthCheckInterface::STATUS_DEGRADED);
+                    break;
             }
         }
 

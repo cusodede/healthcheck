@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace functional;
 
 use dspl\healthcheck\components\web\HealthCheckAction;
+use dspl\healthcheck\models\HealthCheckInterface;
 use FunctionalTester;
 use Throwable;
 
@@ -22,7 +23,7 @@ class HealthCheckCest
     {
         $I->amOnRoute('health/db');
         $I->seeResponseCodeIs(200);
-        $I->seeResponseContains(HealthCheckAction::HEALTHY);
+        $I->seeResponseContains(HealthCheckInterface::STATUS_HEALTHY);
     }
 
     /**
@@ -33,7 +34,7 @@ class HealthCheckCest
     {
         $I->amOnRoute('health/redis');
         $I->seeResponseCodeIs(200);
-        $I->seeResponseContains(HealthCheckAction::HEALTHY);
+        $I->seeResponseContains(HealthCheckInterface::STATUS_HEALTHY);
     }
 
     /**
@@ -44,7 +45,7 @@ class HealthCheckCest
     {
         $I->amOnRoute('health/writable');
         $I->seeResponseCodeIs(200);
-        $I->seeResponseContains(HealthCheckAction::HEALTHY);
+        $I->seeResponseContains(HealthCheckInterface::STATUS_HEALTHY);
     }
 
     /**
@@ -55,7 +56,7 @@ class HealthCheckCest
     {
         $I->amOnRoute('health/custom');
         $I->seeResponseCodeIs(200);
-        $I->seeResponseContains(HealthCheckAction::HEALTHY);
+        $I->seeResponseContains(HealthCheckInterface::STATUS_HEALTHY);
     }
 
     /**
@@ -66,7 +67,7 @@ class HealthCheckCest
     {
         $I->amOnRoute('health/error');
         $I->seeResponseCodeIs(503);
-        $I->seeResponseContains(HealthCheckAction::UNHEALTHY);
+        $I->seeResponseContains(HealthCheckInterface::STATUS_UNHEALTHY);
         $I->assertEquals('Something bad happened', HealthCheckAction::$LAST_ERROR);
     }
 

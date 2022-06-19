@@ -22,20 +22,20 @@ class DbHealthCheck extends HealthCheck
      *    db: database connection (default connection will be used, if ignored)
      *    query: optional query
      */
-    public static function check(array $config = [], ?callable $errorHandler = null): bool
+    public static function check(array $config = [], ?callable $errorHandler = null): string
     {
         try {
             (new Query())->select(ArrayHelper::getValue($config, 'query', new Expression("1")))->createCommand(
                 ArrayHelper::getValue($config, 'db')
             )->execute();
-            return true;
+            return static::STATUS_HEALTHY;
         } catch (Throwable $throwable) {
             if (null === $errorHandler) {
                 static::ErrorHandler($throwable);
             } else {
                 $errorHandler($throwable);
             }
-            return false;
+            return static::STATUS_UNHEALTHY;
         }
     }
 }

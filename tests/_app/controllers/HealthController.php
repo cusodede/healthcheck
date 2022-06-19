@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\models\jobs\EmptyJob;
 use dspl\healthcheck\components\web\HealthCheckAction;
 use dspl\healthcheck\models\DbHealthCheck;
+use dspl\healthcheck\models\HealthCheckInterface;
 use dspl\healthcheck\models\PathAccessHealthCheck;
 use dspl\healthcheck\models\RedisHealthCheck;
 use yii\base\ErrorException;
@@ -59,7 +60,7 @@ class HealthController extends Controller
                                 'message' => 'test from psb',
                             ])
                         );
-                        return true;
+                        return HealthCheckInterface::STATUS_HEALTHY;
                     },
                 ],
             ],
