@@ -29,6 +29,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
       postgres:
         image: postgres:13.4
         env:
@@ -82,3 +84,5 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
           DB_DSN: "pgsql:host=localhost;dbname=healthcheck"
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
